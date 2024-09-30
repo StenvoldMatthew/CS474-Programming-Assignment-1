@@ -1,3 +1,4 @@
+import argparse
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -18,25 +19,26 @@ def show_images(images, titles):
         ax.axis('off')
     plt.show()
 
-# Load the images
-lenna_image = Image.open('lenna.png').convert('L')
-peppers_image = Image.open('peppers.png').convert('L')
+def convertImage(filename):
+    # Load the images
+    image = Image.open(filename).convert('L')
 
-# Convert images to numpy arrays
-lenna_array = np.array(lenna_image)
-peppers_array = np.array(peppers_image)
+    # Convert images to numpy arrays
+    image_array = np.array(image)
+    
 
-# List of quantization levels to test
-levels = [128, 32, 8, 2]
+    # List of quantization levels to test
+    levels = [128, 32, 8, 2]
 
-# Create quantized images for both Lenna and Peppers
-lenna_quantized_images = [quantize_image(lenna_array, L) for L in levels]
-peppers_quantized_images = [quantize_image(peppers_array, L) for L in levels]
+    # Create quantized image
+    quantized_images = [quantize_image(image_array, L) for L in levels]
 
-# Display results for Lenna
-titles = [f"Lenna - L={L}" for L in levels]
-show_images([lenna_image] + lenna_quantized_images, ["Lenna Original"] + titles)
+    # Display results for image
+    titles = [f"image - L={L}" for L in levels]
+    show_images([image] + quantized_images, ["Image Original"] + titles)
 
-# Display results for Peppers
-titles = [f"Peppers - L={L}" for L in levels]
-show_images([peppers_image] + peppers_quantized_images, ["Peppers Original"] + titles)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Image Converter')
+    parser.add_argument('-f','--image_file', type=str, default = "peppers.png", help='path to image file')
+    args = parser.parse_args()
+    convertImage(args.image_file)

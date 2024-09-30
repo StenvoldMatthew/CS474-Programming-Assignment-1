@@ -1,4 +1,5 @@
 import numpy as np
+import argparse
 from PIL import Image
 import matplotlib.pyplot as plt
 
@@ -21,37 +22,33 @@ def sub_sample_and_resize(image, factor):
     
     return sub_sampled, resized_back
 
-# Load the images
-lenna_image = Image.open('lenna.png').convert('RGB')
-peppers_image = Image.open('peppers.png').convert('RGB')
+def convertImage(filename):
+    # Load the images
+    image = Image.open(filename).convert('RGB')
 
-# Original image size
-original_size = (256, 256)
+    # Original image size
+    original_size = (256, 256)
 
-# Resize to 256x256 if necessary
-lenna_image = lenna_image.resize(original_size, Image.NEAREST)
-peppers_image = peppers_image.resize(original_size, Image.NEAREST)
+    # Resize to 256x256 if necessary
+    image = image.resize(original_size, Image.NEAREST)
 
-# Sub-sample and resize for factors 2, 4, 8
-factors = [2, 4, 8]
-lenna_results = []
-peppers_results = []
+    # Sub-sample and resize for factors 2, 4, 8
+    factors = [2, 4, 8]
+    image_results = []
 
-for factor in factors:
-    # Sub-sample and resize Lenna
-    lenna_subsampled, lenna_resized = sub_sample_and_resize(lenna_image, factor)
-    lenna_results.append((lenna_subsampled, lenna_resized))
+    for factor in factors:
+        # Sub-sample and resize image
+        image_subsampled, image_resized = sub_sample_and_resize(image, factor)
+        image_results.append((image_subsampled, image_resized))
 
-    # Sub-sample and resize Peppers
-    peppers_subsampled, peppers_resized = sub_sample_and_resize(peppers_image, factor)
-    peppers_results.append((peppers_subsampled, peppers_resized))
+    # Display results for Image
+    for factor, (subsampled, resized) in zip(factors, image_results):
+        show_images([image, subsampled, resized],
+                    [f"Image Original", f"Sub-sampled (Factor {factor})", f"Resized Back to 256x256"])
+    
 
-# Display results for Lenna
-for factor, (subsampled, resized) in zip(factors, lenna_results):
-    show_images([lenna_image, subsampled, resized],
-                [f"Lenna Original", f"Sub-sampled (Factor {factor})", f"Resized Back to 256x256"])
-
-# Display results for Peppers
-for factor, (subsampled, resized) in zip(factors, peppers_results):
-    show_images([peppers_image, subsampled, resized],
-                [f"Peppers Original", f"Sub-sampled (Factor {factor})", f"Resized Back to 256x256"])
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Image Converter')
+    parser.add_argument('-f','--image_file', type=str, default = "peppers.png", help='path to image file')
+    args = parser.parse_args()
+    convertImage(args.image_file)
