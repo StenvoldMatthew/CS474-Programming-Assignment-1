@@ -23,7 +23,9 @@ def sub_sample_and_resize(image, factor):
     return sub_sampled, resized_back
 
 def convertImage(filename):
-    # Load the images
+    # Load the image
+    if not filename.lower().endswith('.png'):
+        filename += '.png'
     image = Image.open(filename).convert('RGB')
 
     # Original image size

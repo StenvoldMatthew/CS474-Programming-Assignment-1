@@ -20,7 +20,9 @@ def show_images(images, titles):
     plt.show()
 
 def convertImage(filename):
-    # Load the images
+    # Load the image
+    if not filename.lower().endswith('.png'):
+        filename += '.png'
     image = Image.open(filename).convert('L')
 
     # Convert images to numpy arrays
