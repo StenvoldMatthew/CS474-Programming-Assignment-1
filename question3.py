@@ -44,16 +44,12 @@ def plot_image_and_histogram(image, title, equalized_image, equalized_title):
     plt.tight_layout()
     plt.show()
 
-def holderFunction(filename, doTest):
+def holderFunctionName(filename, testSize):
     image_array = []
-    if(doTest):
-        image_array = np.array([[52, 55, 61, 59, 79],
-                       [62, 59, 55, 104, 94],
-                       [63, 65, 66, 113, 144],
-                       [61, 59, 55, 90, 109],
-                       [62, 62, 62, 62, 62]], dtype=np.uint8)
+    if(testSize != 0):
+        image_array = np.random.randint(0, 256, size=(testSize, testSize), dtype=np.uint8)
     else:
-        image = Image.open(args.image_file).convert('L')
+        image = Image.open(filename).convert('L')
         image_array = np.array(image)
 
     # Perform histogram equalization
@@ -66,6 +62,6 @@ def holderFunction(filename, doTest):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Image Converter')
     parser.add_argument('-f','--image_file', type=str, default = "boat.png", help='path to image file')
-    parser.add_argument('-t','--perform_test', action='store_true', help='boolean to run test image')
+    parser.add_argument('-t','--test_size', type=int, default = 0, help='set to value to run test')
     args = parser.parse_args()
-    holderFunction(args.image_file, args.perform_test)
+    holderFunctionName(args.image_file, args.test_size)
