@@ -23,11 +23,11 @@ def convertImage(filename):
     # Load the image
     if not filename.lower().endswith('.png'):
         filename += '.png'
+    # Converts the png file to PGM
     image = Image.open(filename).convert('L')
 
     # Convert images to numpy arrays
-    image_array = np.array(image)
-    
+    image_array = np.array(image)    
 
     # List of quantization levels to test
     levels = [128, 32, 8, 2]
