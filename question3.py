@@ -44,10 +44,10 @@ def plot_image_and_histogram(image, title, equalized_image, equalized_title):
     plt.tight_layout()
     plt.show()
 
-def holderFunctionName(filename, testSize):
+def holderFunctionName(filename, testValues):
     image_array = []
-    if(testSize != 0):
-        image_array = np.random.randint(0, 256, size=(testSize, testSize), dtype=np.uint8)
+    if(testValues[0] != 0):
+        image_array = np.random.randint(testValues[1], testValues[2], size=(testValues[0], testValues[0]), dtype=np.uint8)
     else:
         image = Image.open(filename).convert('L')
         image_array = np.array(image)
@@ -63,5 +63,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Image Converter')
     parser.add_argument('-f','--image_file', type=str, default = "boat.png", help='path to image file')
     parser.add_argument('-t','--test_size', type=int, default = 0, help='set to value to run test')
+    parser.add_argument('-min','--test_min', type=int, default = 0, help='the minimum value test will give')
+    parser.add_argument('-max','--test_max', type=int, default = 128, help='the maximum value test will give')
     args = parser.parse_args()
-    holderFunctionName(args.image_file, args.test_size)
+    holderFunctionName(args.image_file, [args.test_size, args.test_min, args.test_max])
