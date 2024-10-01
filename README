@@ -1,0 +1,28 @@
+To run this code, you will need the following libraries installed:
+  numpy
+  argparse
+  PIL
+  matplotlib
+
+question1.py does image quantization as told in question 1. You can run the program using the following prompt in the terminal:
+    python3 question1.py -f lenna
+    python3 question1.py -f (filename)
+
+If '-f' is ommitted, it will automatically run on the "peppers.png" file.
+
+question2.py does image sampling as told in question 2. You can run the program using the following prompt in the terminal:
+    python3 question2.py -f lenna
+    python3 question2.py -f (filename)
+
+If '-f' is ommitted, it will automatically run on the "peppers.png" file.
+
+question3.py does Histogram Equalization as told in question 2. You can run the program using the following prompt in the terminal:
+    python3 question3.py -f boat
+    python3 question3.py -f (filename)
+
+You can also run the test of equalization using the following command prompts
+    python3 question3.py -t 10
+    python3 question3.py -t 64 -l 100
+    python3 question3.py -t 256 -l 200 -s 20  
+
+Setting the '-t' flag to anything will generate an NxN image using a normal distribution. The center of the normal distribution can be changed using the '-l' flag, and the spead (sigma) can be changed using the '-s' flag.

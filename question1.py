@@ -4,7 +4,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 # Function to display images
-def show_images(images, titles):
+def showImages(images, titles):
     fig, axes = plt.subplots(1, len(images), figsize=(15, 5))
     for ax, img, title in zip(axes, images, titles):
         ax.imshow(img)
@@ -13,14 +13,14 @@ def show_images(images, titles):
     plt.show()
 
 # Function to perform sub-sampling and resizing
-def sub_sample_and_resize(image, factor):
+def subSample(image, factor):
     # Sub-sample the image
     sub_sampled = image.resize((image.width // factor, image.height // factor), Image.NEAREST)
     
     # Resize back to original size
     resized_back = sub_sampled.resize((image.width, image.height), Image.NEAREST)
     
-    return sub_sampled, resized_back
+    return resized_back
 
 def convertImage(filename):
     # Load the image
@@ -28,25 +28,23 @@ def convertImage(filename):
         filename += '.png'
     image = Image.open(filename).convert('RGB')
 
-    # Original image size
-    original_size = (256, 256)
-
     # Resize to 256x256 if necessary
+    original_size = (256, 256)
     image = image.resize(original_size, Image.NEAREST)
 
     # Sub-sample and resize for factors 2, 4, 8
     factors = [2, 4, 8]
     image_results = []
+    titles = [f"Image Original"]
 
     for factor in factors:
         # Sub-sample and resize image
-        image_subsampled, image_resized = sub_sample_and_resize(image, factor)
-        image_results.append((image_subsampled, image_resized))
+        image_subsampled= subSample(image, factor)
+        image_results.append(image_subsampled)
+        titles.append(f"Sub-sampled (Factor {factor})")
 
-    # Display results for Image
-    for factor, (subsampled, resized) in zip(factors, image_results):
-        show_images([image, subsampled, resized],
-                    [f"Image Original", f"Sub-sampled (Factor {factor})", f"Resized Back to 256x256"])
+    # Display results
+    showImages([image] + image_results, titles)
     
 
 if __name__ == '__main__':
