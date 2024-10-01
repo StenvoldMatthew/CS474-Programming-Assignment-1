@@ -7,26 +7,36 @@ import matplotlib.pyplot as plt
 def showImages(images, titles):
     fig, axes = plt.subplots(1, len(images), figsize=(15, 5))
     for ax, img, title in zip(axes, images, titles):
-        ax.imshow(img)
+        ax.imshow(img, cmap='gray', vmin=0, vmax=255)
         ax.set_title(title)
         ax.axis('off')
     plt.show()
 
+
 # Function to perform sub-sampling and resizing
 def subSample(image, factor):
-    # Sub-sample the image
-    sub_sampled = image.resize((image.width // factor, image.height // factor), Image.NEAREST)
+    image_array = np.array(image) 
+    newSize = 256//factor
     
-    # Resize back to original size
-    resized_back = sub_sampled.resize((image.width, image.height), Image.NEAREST)
-    
-    return resized_back
+    resultsArray = np.empty((newSize, newSize), dtype=np.uint8)
+    resizedArray = np.empty((256, 256), dtype=np.uint8)
+    for i in range(256):
+        for j in range(256):
+            if i % factor == 0 and j % factor == 0:
+                resultsArray[i//factor, j//factor] = image_array[i, j]
+
+                # Will make the new image 256x256 
+                for k in range(factor):
+                    for l in range(factor):
+                        resizedArray[i+k, j+l] = image_array[i, j]
+
+    return resizedArray
 
 def convertImage(filename):
     # Load the image
     if not filename.lower().endswith('.png'):
         filename += '.png'
-    image = Image.open(filename).convert('RGB')
+    image = Image.open(filename).convert('L')
 
     # Resize to 256x256 if necessary
     original_size = (256, 256)

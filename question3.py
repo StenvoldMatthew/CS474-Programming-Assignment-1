@@ -12,12 +12,11 @@ def histogramEqualization(image):
     cdf = hist.cumsum()
 
     # Normalize the CDF
-    cdf = (cdf - cdf.min()) * 255 / (cdf.max() - cdf.min())
+    cdf = (cdf - cdf.min()) * (255 / (cdf.max() - cdf.min()))
     cdf = cdf.astype('uint8')
 
     # Use the CDF to map the original image's pixel values to equalized values
     equalized_image = cdf[image]
-
     return equalized_image 
 
 # Function to display images and histograms
